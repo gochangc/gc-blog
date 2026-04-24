@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: gcblog-navigation
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        file-extension: yml
+        namespace: public
+        group: DEFAULT_GROUP
