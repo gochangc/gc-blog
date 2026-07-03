@@ -34,16 +34,18 @@ export const NAV_ITEMS = [
   { path: '/navigation', label: '导航' },
 ]
 
-/** 面包屑映射（路径 → 标题） */
-export const BREADCRUMB_MAP: Record<string, string> = {
-  '/admin': '管理后台',
-  '/admin/articles': '文章管理',
-  '/admin/articles/new': '新建文章',
-  '/admin/categories': '分类管理',
-  '/admin/tags': '标签管理',
-  '/admin/nav-categories': '导航分类',
-  '/admin/nav-links': '导航链接',
-  '/admin/users': '用户管理',
+/** 面包屑映射（路径 → 面包屑层级） */
+export const BREADCRUMB_MAP: Record<string, Array<{ label: string; path: string }>> = {
+  '/admin/articles': [{ label: '文章管理', path: '/admin/articles' }],
+  '/admin/articles/new': [
+    { label: '文章管理', path: '/admin/articles' },
+    { label: '新建文章', path: '/admin/articles/new' },
+  ],
+  '/admin/categories': [{ label: '分类管理', path: '/admin/categories' }],
+  '/admin/tags': [{ label: '标签管理', path: '/admin/tags' }],
+  '/admin/nav-categories': [{ label: '导航分类', path: '/admin/nav-categories' }],
+  '/admin/nav-links': [{ label: '导航链接', path: '/admin/nav-links' }],
+  '/admin/users': [{ label: '用户管理', path: '/admin/users' }],
 }
 
 /** 侧边栏宽度常量 */
