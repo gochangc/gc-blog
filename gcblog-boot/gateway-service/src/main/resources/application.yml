@@ -4,12 +4,14 @@ server:
 spring:
   application:
     name: gateway-service
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848
+        server-addr: ${NACOS_ADDR:localhost:8848}
       config:
-        server-addr: localhost:8848
+        server-addr: ${NACOS_ADDR:localhost:8848}
         file-extension: yml
     gateway:
       discovery:
@@ -33,22 +35,18 @@ spring:
           filters:
             - StripPrefix=1
 
-        # 博客服务路由
+        # 博客服务路由（StripPrefix=2 去掉 /api/blog 前缀，匹配 Controller 的 /articles、/admin/articles 等路径）
         - id: gcblog-blog
           uri: lb://gcblog-blog
           predicates:
             - Path=/api/blog/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
 
-        # 导航服务路由
+        # 导航服务路由（StripPrefix=2 去掉 /api/navigation 前缀，匹配 Controller 的 /nav-links、/nav-categories 等路径）
         - id: gcblog-navigation
           uri: lb://gcblog-navigation
           predicates:
             - Path=/api/navigation/**
           filters:
-            - StripPrefix=1
-
-logging:
-  level:
-    com.gcblog: debug
+            - StripPrefix=2
