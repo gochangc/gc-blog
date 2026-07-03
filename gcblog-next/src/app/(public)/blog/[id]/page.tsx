@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import { MarkdownRenderer } from '@/components/blog/markdown-renderer'
 import { CommentSection } from '@/components/blog/comment-section'
 import { Badge } from '@/components/ui/badge'
@@ -9,24 +10,40 @@ interface BlogDetailPageProps {
   params: Promise<{ id: string }>
 }
 
-/** 文章详情页（SSR） */
-export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
-  const { id } = await params
+/** 获取文章详情（用于 metadata 和页面渲染） */
+async function getArticle(id: string): Promise<ArticleDetail | null> {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api'
-
-  let article: ArticleDetail | null = null
   try {
     const res = await fetch(`${baseUrl}/blog/articles/${id}`, {
       next: { revalidate: 60 },
     })
     if (res.ok) {
       const body = await res.json()
-      article = body.data || body
-    }
-    if (!article) {
-      notFound()
+      return body.data || body
     }
   } catch {
+    // 获取失败返回 null
+  }
+  return null
+}
+
+/** 动态 SEO metadata */
+export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
+  const { id } = await params
+  const article = await getArticle(id)
+  if (!article) return { title: '文章不存在' }
+  return {
+    title: article.title,
+    description: article.title,
+  }
+}
+
+/** 文章详情页（SSR） */
+export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
+  const { id } = await params
+  const article = await getArticle(id)
+
+  if (!article) {
     notFound()
   }
 
