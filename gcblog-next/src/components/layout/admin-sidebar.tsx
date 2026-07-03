@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import {
   PanelLeftClose,
   PanelLeft,
@@ -16,11 +16,10 @@ interface AdminSidebarProps {
   onToggle: () => void
 }
 
-/** 后台侧边栏 */
+/** 后台侧边栏（深色风格） */
 export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
   const pathname = usePathname()
 
-  /** 判断菜单项是否激活 */
   const isActive = (path: string) => pathname.startsWith(path)
 
   const menuContent = (
@@ -31,10 +30,10 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
           <Link
             key={item.path}
             href={item.path}
-            className={`flex items-center gap-3 h-12 px-3 rounded-lg transition-colors duration-200
+            className={`flex items-center gap-3 h-11 px-3 rounded-lg transition-all duration-200
               ${isActive(item.path)
-                ? 'bg-[#6366f1]/20 text-[#818cf8]'
-                : 'text-white/70 hover:bg-white/10 hover:text-white'
+                ? 'bg-[#3b82f6]/15 text-[#60a5fa] shadow-[inset_0_0_0_1px_rgba(59,130,246,0.2)]'
+                : 'text-[#94a3b8] hover:bg-white/5 hover:text-foreground'
               }
               ${collapsed ? 'justify-center px-0' : ''}`}
             title={collapsed ? item.label : undefined}
@@ -51,27 +50,32 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
     <>
       {/* 桌面端侧边栏 */}
       <aside
-        className={`hidden lg:flex flex-col h-screen bg-[#1e1b4b] transition-all duration-250 shrink-0
-          ${collapsed ? 'w-16' : 'w-[220px]'}`}
+        className={`hidden lg:flex flex-col h-screen transition-all duration-250 shrink-0 border-r border-white/6
+          ${collapsed ? 'w-16' : 'w-[220px]'} bg-[#0b1120]`}
       >
-        {/* 顶部 Logo 区域 */}
-        <div className="h-16 flex items-center justify-center border-b border-white/8">
+        {/* 顶部 Logo */}
+        <div className="h-16 flex items-center justify-center border-b border-white/6">
           {collapsed ? (
-            <span className="text-xl font-bold text-white">G</span>
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#3b82f6] to-[#6366f1] flex items-center justify-center text-white font-bold text-xs">
+              GC
+            </div>
           ) : (
-            <span className="text-lg font-bold text-white">GCBlog Admin</span>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#3b82f6] to-[#6366f1] flex items-center justify-center text-white font-bold text-xs">
+                GC
+              </div>
+              <span className="text-sm font-semibold text-foreground">Admin</span>
+            </div>
           )}
         </div>
 
-        {/* 菜单 */}
         <div className="flex-1 overflow-y-auto">{menuContent}</div>
 
-        {/* 底部折叠按钮 */}
-        <div className="p-3 border-t border-white/8">
+        <div className="p-3 border-t border-white/6">
           <Button
             variant="ghost"
             size="sm"
-            className="w-full text-white/60 hover:text-white hover:bg-white/10"
+            className="w-full text-[#64748b] hover:text-foreground hover:bg-white/5"
             onClick={onToggle}
           >
             {collapsed ? <PanelLeft className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
@@ -79,15 +83,21 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
         </div>
       </aside>
 
-      {/* 移动端侧边栏抽屉 */}
+      {/* 移动端侧边栏 */}
       <div className="lg:hidden">
         <Sheet>
-          <SheetTrigger className="fixed top-3 left-3 z-50 inline-flex items-center justify-center w-8 h-8 rounded-md hover:bg-gray-100 cursor-pointer">
-            <MenuIcon className="w-5 h-5" />
+          <SheetTrigger className="fixed top-3 left-3 z-50 inline-flex items-center justify-center w-8 h-8 rounded-md hover:bg-white/5 cursor-pointer">
+            <MenuIcon className="w-5 h-5 text-[#94a3b8]" />
           </SheetTrigger>
-          <SheetContent side="left" className="w-[220px] bg-[#1e1b4b] border-white/10 p-0">
-            <div className="h-16 flex items-center justify-center border-b border-white/8">
-              <span className="text-lg font-bold text-white">GCBlog Admin</span>
+          <SheetContent side="left" className="w-[220px] bg-[#0b1120] border-white/6 p-0">
+            <SheetTitle className="sr-only">管理后台导航</SheetTitle>
+            <div className="h-16 flex items-center justify-center border-b border-white/6">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#3b82f6] to-[#6366f1] flex items-center justify-center text-white font-bold text-xs">
+                  GC
+                </div>
+                <span className="text-sm font-semibold text-foreground">Admin</span>
+              </div>
             </div>
             {menuContent}
           </SheetContent>

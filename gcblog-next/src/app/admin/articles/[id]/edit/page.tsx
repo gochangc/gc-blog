@@ -7,14 +7,13 @@ import { ArticleForm } from '@/components/blog/article-form'
 import { getArticleDetailApi, updateArticleApi } from '@/lib/api/blog'
 import type { ArticleDetail, ArticleFormData } from '@/lib/types/blog'
 
-/** 编辑文章页面 */
+/** 编辑文章页面（深色主题） */
 export default function EditArticlePage() {
   const router = useRouter()
   const params = useParams()
   const [article, setArticle] = useState<ArticleDetail | null>(null)
   const [loading, setLoading] = useState(true)
 
-  /** 加载文章详情 */
   useEffect(() => {
     const id = Number(params.id)
     if (!id) return
@@ -24,7 +23,6 @@ export default function EditArticlePage() {
       .finally(() => setLoading(false))
   }, [params.id])
 
-  /** 提交更新文章 */
   const handleSubmit = async (data: ArticleFormData) => {
     await updateArticleApi(Number(params.id), data)
     router.push('/admin/articles')
@@ -33,16 +31,16 @@ export default function EditArticlePage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <Skeleton className="h-8 w-48" />
-        <Skeleton className="h-64 w-full" />
-        <Skeleton className="h-96 w-full" />
+        <Skeleton className="h-8 w-48 bg-white/5" />
+        <Skeleton className="h-64 w-full bg-white/5" />
+        <Skeleton className="h-96 w-full bg-white/5" />
       </div>
     )
   }
 
   if (!article) {
     return (
-      <div className="text-center py-16 text-[#94a3b8]">
+      <div className="text-center py-16 text-[#64748b]">
         文章不存在
       </div>
     )
@@ -50,7 +48,7 @@ export default function EditArticlePage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1e293b] mb-6">编辑文章</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">编辑文章</h1>
       <ArticleForm
         isEdit
         initialData={{

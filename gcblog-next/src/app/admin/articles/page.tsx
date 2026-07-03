@@ -19,7 +19,7 @@ import {
 } from '@/lib/api/blog'
 import type { Article, ArticleFormData } from '@/lib/types/blog'
 
-/** 文章管理列表页面 */
+/** 文章管理列表页面（深色主题） */
 export default function AdminArticlesPage() {
   const {
     data: articles, loading, deleteId,
@@ -29,7 +29,6 @@ export default function AdminArticlesPage() {
     deleteItem: deleteArticleApi,
   })
 
-  /** 发布文章 */
   const handlePublish = async (id: number) => {
     try {
       await publishArticleApi(id)
@@ -40,7 +39,6 @@ export default function AdminArticlesPage() {
     }
   }
 
-  /** 删除文章 */
   const handleDelete = async () => {
     try {
       await confirmDelete()
@@ -53,9 +51,9 @@ export default function AdminArticlesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#1e293b]">文章管理</h1>
+        <h1 className="text-2xl font-bold text-foreground">文章管理</h1>
         <Link href="/admin/articles/new">
-          <Button className="bg-[#6366f1] hover:bg-[#4f46e5]">
+          <Button className="bg-[#3b82f6] hover:bg-[#2563eb]">
             <Plus className="w-4 h-4 mr-2" />
             新建文章
           </Button>
@@ -65,38 +63,38 @@ export default function AdminArticlesPage() {
       {loading ? (
         <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton key={i} className="h-12 w-full" />
+            <Skeleton key={i} className="h-12 w-full bg-white/5" />
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-xl border">
+        <div className="rounded-xl border border-white/8 bg-white/[0.02] overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>标题</TableHead>
-                <TableHead>分类</TableHead>
-                <TableHead>标签</TableHead>
-                <TableHead>浏览量</TableHead>
-                <TableHead>创建时间</TableHead>
-                <TableHead className="text-right">操作</TableHead>
+              <TableRow className="border-white/8 hover:bg-transparent">
+                <TableHead className="text-[#94a3b8]">标题</TableHead>
+                <TableHead className="text-[#94a3b8]">分类</TableHead>
+                <TableHead className="text-[#94a3b8]">标签</TableHead>
+                <TableHead className="text-[#94a3b8]">浏览量</TableHead>
+                <TableHead className="text-[#94a3b8]">创建时间</TableHead>
+                <TableHead className="text-[#94a3b8] text-right">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {articles.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8 text-[#94a3b8]">
+                <TableRow className="border-white/8">
+                  <TableCell colSpan={6} className="text-center py-8 text-[#64748b]">
                     暂无文章数据
                   </TableCell>
                 </TableRow>
               ) : (
                 articles.map((article) => (
-                  <TableRow key={article.id}>
-                    <TableCell className="font-medium max-w-[300px] truncate">
+                  <TableRow key={article.id} className="border-white/8 hover:bg-white/[0.02]">
+                    <TableCell className="font-medium max-w-[300px] truncate text-foreground">
                       {article.title}
                     </TableCell>
                     <TableCell>
                       {article.categoryName ? (
-                        <Badge variant="secondary" className="bg-[#6366f1]/10 text-[#6366f1]">
+                        <Badge variant="secondary" className="bg-[#3b82f6]/10 text-[#60a5fa] border-[#3b82f6]/20">
                           {article.categoryName}
                         </Badge>
                       ) : '-'}
@@ -104,32 +102,32 @@ export default function AdminArticlesPage() {
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
                         {article.tagNames?.slice(0, 2).map((tag) => (
-                          <Badge key={tag} variant="outline" className="text-xs">
+                          <Badge key={tag} variant="outline" className="text-xs border-white/10 text-[#94a3b8]">
                             {tag}
                           </Badge>
                         ))}
                       </div>
                     </TableCell>
-                    <TableCell>{article.viewCount}</TableCell>
-                    <TableCell className="text-[#94a3b8] text-sm">
+                    <TableCell className="text-[#94a3b8]">{article.viewCount}</TableCell>
+                    <TableCell className="text-[#64748b] text-sm">
                       {article.createTime?.slice(0, 10)}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1">
                         <Link href={`/blog/${article.id}`} target="_blank">
-                          <Button variant="ghost" size="sm" title="预览">
+                          <Button variant="ghost" size="sm" title="预览" className="text-[#94a3b8] hover:text-foreground hover:bg-white/5">
                             <Eye className="w-4 h-4" />
                           </Button>
                         </Link>
-                        <Button variant="ghost" size="sm" onClick={() => handlePublish(article.id)} title="发布">
-                          <Send className="w-4 h-4 text-[#22c55e]" />
+                        <Button variant="ghost" size="sm" onClick={() => handlePublish(article.id)} title="发布" className="text-[#22c55e] hover:bg-[#22c55e]/10">
+                          <Send className="w-4 h-4" />
                         </Button>
                         <Link href={`/admin/articles/${article.id}/edit`}>
-                          <Button variant="ghost" size="sm" title="编辑">
+                          <Button variant="ghost" size="sm" title="编辑" className="text-[#94a3b8] hover:text-foreground hover:bg-white/5">
                             <Pencil className="w-4 h-4" />
                           </Button>
                         </Link>
-                        <Button variant="ghost" size="sm" onClick={() => openDelete(article.id)} className="text-red-600" title="删除">
+                        <Button variant="ghost" size="sm" onClick={() => openDelete(article.id)} className="text-[#ef4444] hover:bg-[#ef4444]/10" title="删除">
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -144,16 +142,16 @@ export default function AdminArticlesPage() {
 
       {/* 删除确认弹窗 */}
       <AlertDialog open={deleteId !== null} onOpenChange={(open) => !open && closeDelete()}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-[#1e293b] border-white/10">
           <AlertDialogHeader>
-            <AlertDialogTitle>确认删除</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-foreground">确认删除</AlertDialogTitle>
+            <AlertDialogDescription className="text-[#94a3b8]">
               删除后不可恢复，确定要删除该文章吗？
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>取消</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-700">
+            <AlertDialogCancel className="border-white/10 text-[#94a3b8] hover:bg-white/5">取消</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-[#ef4444] hover:bg-[#dc2626]">
               确认删除
             </AlertDialogAction>
           </AlertDialogFooter>

@@ -8,22 +8,18 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { MarkdownEditor } from '@/components/blog/markdown-editor'
 import { getCategoriesApi, getTagsApi } from '@/lib/api/blog'
 import type { ArticleFormData, Category, Tag } from '@/lib/types/blog'
 import { Loader2, X } from 'lucide-react'
 
 interface ArticleFormProps {
-  /** 初始数据（编辑模式） */
   initialData?: Partial<ArticleFormData>
-  /** 提交回调 */
   onSubmit: (data: ArticleFormData) => Promise<void>
-  /** 是否编辑模式 */
   isEdit?: boolean
 }
 
-/** 文章编辑表单 */
+/** 文章编辑表单（深色主题） */
 export function ArticleForm({ initialData, onSubmit, isEdit }: ArticleFormProps) {
   const [form, setForm] = useState<ArticleFormData>({
     title: initialData?.title || '',
@@ -40,7 +36,6 @@ export function ArticleForm({ initialData, onSubmit, isEdit }: ArticleFormProps)
   const [tags, setTags] = useState<Tag[]>([])
   const [submitting, setSubmitting] = useState(false)
 
-  /** 加载分类和标签 */
   useEffect(() => {
     Promise.all([getCategoriesApi(), getTagsApi()])
       .then(([cats, tgs]) => {
@@ -50,7 +45,6 @@ export function ArticleForm({ initialData, onSubmit, isEdit }: ArticleFormProps)
       .catch(() => {})
   }, [])
 
-  /** 切换标签选择 */
   const toggleTag = (tagId: number) => {
     setForm((prev) => ({
       ...prev,
@@ -60,7 +54,6 @@ export function ArticleForm({ initialData, onSubmit, isEdit }: ArticleFormProps)
     }))
   }
 
-  /** 提交表单 */
   const handleSubmit = async () => {
     if (!form.title.trim()) {
       toast.error('请输入文章标题')
@@ -85,61 +78,62 @@ export function ArticleForm({ initialData, onSubmit, isEdit }: ArticleFormProps)
     }
   }
 
+  /** 输入框通用样式 */
+  const inputClass = 'bg-white/5 border-white/10 text-foreground placeholder:text-[#475569] focus:border-[#3b82f6]/50 focus:ring-[#3b82f6]/20'
+
   return (
     <div className="space-y-6">
-      {/* 标题和摘要 */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">基本信息</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      {/* 基本信息 */}
+      <div className="rounded-xl border border-white/8 bg-white/[0.02] p-6">
+        <h2 className="text-base font-semibold text-foreground mb-5">基本信息</h2>
+        <div className="space-y-4">
           <div className="space-y-2">
-            <Label>文章标题</Label>
+            <Label className="text-[#94a3b8] text-sm">文章标题</Label>
             <Input
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               placeholder="请输入文章标题"
-              className="text-lg"
+              className={`${inputClass} text-lg`}
             />
           </div>
           <div className="space-y-2">
-            <Label>文章摘要</Label>
+            <Label className="text-[#94a3b8] text-sm">文章摘要</Label>
             <Textarea
               value={form.summary}
               onChange={(e) => setForm({ ...form, summary: e.target.value })}
               placeholder="请输入文章摘要（可选）"
               rows={3}
+              className={inputClass}
             />
           </div>
           <div className="space-y-2">
-            <Label>封面图片 URL</Label>
+            <Label className="text-[#94a3b8] text-sm">封面图片 URL</Label>
             <Input
               value={form.coverImage}
               onChange={(e) => setForm({ ...form, coverImage: e.target.value })}
               placeholder="请输入封面图片地址（可选）"
+              className={inputClass}
             />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* 分类和标签 */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">分类与标签</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <div className="rounded-xl border border-white/8 bg-white/[0.02] p-6">
+        <h2 className="text-base font-semibold text-foreground mb-5">分类与标签</h2>
+        <div className="space-y-4">
           <div className="space-y-2">
-            <Label>文章分类</Label>
+            <Label className="text-[#94a3b8] text-sm">文章分类</Label>
             <Select
               value={form.categoryId ? String(form.categoryId) : ''}
               onValueChange={(val) => setForm({ ...form, categoryId: Number(val) })}
             >
-              <SelectTrigger>
+              <SelectTrigger className="bg-white/5 border-white/10 text-foreground">
                 <SelectValue placeholder="请选择分类" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-[#1e293b] border-white/10">
                 {categories.map((cat) => (
-                  <SelectItem key={cat.id} value={String(cat.id)}>
+                  <SelectItem key={cat.id} value={String(cat.id)} className="focus:bg-white/10">
                     {cat.name}
                   </SelectItem>
                 ))}
@@ -147,16 +141,16 @@ export function ArticleForm({ initialData, onSubmit, isEdit }: ArticleFormProps)
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>文章标签</Label>
+            <Label className="text-[#94a3b8] text-sm">文章标签</Label>
             <div className="flex flex-wrap gap-2">
               {tags.map((tag) => (
                 <Badge
                   key={tag.id}
                   variant={form.tagIds.includes(tag.id) ? 'default' : 'outline'}
-                  className={`cursor-pointer ${
+                  className={`cursor-pointer transition-colors ${
                     form.tagIds.includes(tag.id)
-                      ? 'bg-[#6366f1] hover:bg-[#4f46e5]'
-                      : 'hover:bg-gray-100'
+                      ? 'bg-[#3b82f6] hover:bg-[#2563eb] text-white'
+                      : 'border-white/10 text-[#94a3b8] hover:bg-white/5'
                   }`}
                   onClick={() => toggleTag(tag.id)}
                 >
@@ -165,33 +159,29 @@ export function ArticleForm({ initialData, onSubmit, isEdit }: ArticleFormProps)
                 </Badge>
               ))}
               {tags.length === 0 && (
-                <span className="text-sm text-[#94a3b8]">暂无可用标签</span>
+                <span className="text-sm text-[#64748b]">暂无可用标签</span>
               )}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* Markdown 编辑器 */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">文章内容</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <MarkdownEditor
-            value={form.content}
-            onChange={(content) => setForm({ ...form, content })}
-            height={500}
-          />
-        </CardContent>
-      </Card>
+      {/* 文章内容 */}
+      <div className="rounded-xl border border-white/8 bg-white/[0.02] p-6">
+        <h2 className="text-base font-semibold text-foreground mb-5">文章内容</h2>
+        <MarkdownEditor
+          value={form.content}
+          onChange={(content) => setForm({ ...form, content })}
+          height={500}
+        />
+      </div>
 
       {/* 提交按钮 */}
       <div className="flex items-center justify-end gap-3">
-        <Button variant="outline" onClick={() => window.history.back()}>
+        <Button variant="outline" onClick={() => window.history.back()} className="border-white/10 text-[#94a3b8] hover:bg-white/5">
           取消
         </Button>
-        <Button onClick={handleSubmit} disabled={submitting} className="bg-[#6366f1] hover:bg-[#4f46e5]">
+        <Button onClick={handleSubmit} disabled={submitting} className="bg-[#3b82f6] hover:bg-[#2563eb]">
           {submitting ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />

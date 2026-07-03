@@ -8,7 +8,6 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Loader2, MessageSquare } from 'lucide-react'
 import { createCommentApi } from '@/lib/api/blog'
 
@@ -23,7 +22,7 @@ interface CommentSectionProps {
   articleId: number
 }
 
-/** 文章评论区 */
+/** 文章评论区（深色主题） */
 export function CommentSection({ articleId }: CommentSectionProps) {
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -37,7 +36,6 @@ export function CommentSection({ articleId }: CommentSectionProps) {
     resolver: zodResolver(commentSchema),
   })
 
-  /** 提交评论 */
   const onSubmit = async (data: CommentFormData) => {
     setLoading(true)
     try {
@@ -54,49 +52,47 @@ export function CommentSection({ articleId }: CommentSectionProps) {
   }
 
   return (
-    <Card className="mt-8">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <MessageSquare className="w-5 h-5" />
-          发表评论
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        {submitted ? (
-          <div className="text-center py-4 text-[#22c55e]">
-            评论已提交，感谢您的反馈！
+    <div className="mt-10 rounded-xl border border-white/8 bg-white/[0.02] p-6">
+      <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground mb-5">
+        <MessageSquare className="w-5 h-5 text-[#60a5fa]" />
+        发表评论
+      </h3>
+
+      {submitted ? (
+        <div className="text-center py-6 text-[#22c55e]">
+          评论已提交，感谢您的反馈！
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="comment-content" className="text-[#94a3b8] text-sm">评论内容</Label>
+            <Textarea
+              id="comment-content"
+              placeholder="写下你的想法..."
+              rows={4}
+              className="bg-white/5 border-white/10 text-foreground placeholder:text-[#475569] focus:border-[#3b82f6]/50"
+              {...register('content')}
+            />
+            {errors.content && (
+              <p className="text-sm text-[#ef4444]">{errors.content.message}</p>
+            )}
           </div>
-        ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="comment-content">评论内容</Label>
-              <Textarea
-                id="comment-content"
-                placeholder="写下你的想法..."
-                rows={4}
-                {...register('content')}
-              />
-              {errors.content && (
-                <p className="text-sm text-red-500">{errors.content.message}</p>
-              )}
-            </div>
-            <Button
-              type="submit"
-              className="bg-[#6366f1] hover:bg-[#4f46e5]"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  提交中...
-                </>
-              ) : (
-                '发表评论'
-              )}
-            </Button>
-          </form>
-        )}
-      </CardContent>
-    </Card>
+          <Button
+            type="submit"
+            className="bg-[#3b82f6] hover:bg-[#2563eb] text-sm"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                提交中...
+              </>
+            ) : (
+              '发表评论'
+            )}
+          </Button>
+        </form>
+      )}
+    </div>
   )
 }
