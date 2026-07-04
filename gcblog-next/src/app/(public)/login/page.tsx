@@ -10,10 +10,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuthStore } from '@/stores/auth-store'
-import { MagicCard } from '@/components/ui/magic-card'
-import { ShimmerButton } from '@/components/ui/shimmer-button'
-import { BlurFade } from '@/components/ui/blur-fade'
-import { Particles } from '@/components/ui/particles'
 import { Loader2 } from 'lucide-react'
 
 /** 登录表单校验 Schema */
@@ -57,12 +53,12 @@ function LoginFormContent() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div className="space-y-2">
-        <Label htmlFor="username" className="text-[#94a3b8] text-sm">用户名</Label>
+        <Label htmlFor="username" className="text-[#64748b] text-sm">用户名</Label>
         <Input
           id="username"
           placeholder="请输入用户名"
           autoComplete="username"
-          className="bg-white/5 border-white/10 text-foreground placeholder:text-[#475569] focus:border-[#3b82f6]/50 focus:ring-[#3b82f6]/20"
+          className="bg-[#f8fafc] border-[#e2e8f0] text-foreground placeholder:text-[#94a3b8] focus:border-[#3b82f6]/50 focus:ring-[#3b82f6]/20"
           {...register('username')}
         />
         {errors.username && (
@@ -70,13 +66,13 @@ function LoginFormContent() {
         )}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="password" className="text-[#94a3b8] text-sm">密码</Label>
+        <Label htmlFor="password" className="text-[#64748b] text-sm">密码</Label>
         <Input
           id="password"
           type="password"
           placeholder="请输入密码"
           autoComplete="current-password"
-          className="bg-white/5 border-white/10 text-foreground placeholder:text-[#475569] focus:border-[#3b82f6]/50 focus:ring-[#3b82f6]/20"
+          className="bg-[#f8fafc] border-[#e2e8f0] text-foreground placeholder:text-[#94a3b8] focus:border-[#3b82f6]/50 focus:ring-[#3b82f6]/20"
           {...register('password')}
         />
         {errors.password && (
@@ -101,48 +97,29 @@ function LoginFormContent() {
   )
 }
 
-/** 登录页面（深色主题 + Magic UI） */
+/** 登录页面（简洁浅色主题） */
 export default function LoginPage() {
   return (
-    <div className="relative flex items-center justify-center min-h-[80vh] px-4">
-      {/* 背景粒子 */}
-      <Particles
-        className="absolute inset-0"
-        quantity={40}
-        color="#3b82f6"
-        size={0.5}
-        staticity={40}
-        ease={70}
-      />
-
-      <BlurFade delay={0.1} duration={0.6}>
-        <div className="w-full max-w-md">
-          <MagicCard
-            className="rounded-2xl p-0"
-            gradientColor="rgba(59, 130, 246, 0.06)"
-            gradientFrom="#3b82f6"
-            gradientTo="#6366f1"
-          >
-            <div className="p-8">
-              {/* Logo */}
-              <div className="text-center mb-8">
-                <div className="flex items-center justify-center gap-2.5 mb-4">
-                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#3b82f6] to-[#6366f1] flex items-center justify-center text-white font-bold text-base glow-blue-sm">
-                    GC
-                  </div>
-                  <span className="text-2xl font-bold text-foreground">Blog</span>
-                </div>
-                <h2 className="text-lg font-semibold text-foreground">欢迎回来</h2>
-                <p className="text-sm text-[#64748b] mt-1">请登录您的账号</p>
+    <div className="flex items-center justify-center min-h-[80vh] px-4">
+      <div className="w-full max-w-md">
+        <div className="rounded-2xl border border-[#e2e8f0] bg-white p-8 shadow-sm">
+          {/* Logo */}
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-2.5 mb-4">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#3b82f6] to-[#6366f1] flex items-center justify-center text-white font-bold text-base shadow-md">
+                GC
               </div>
-
-              <Suspense fallback={<div className="text-center py-4 text-[#64748b]">加载中...</div>}>
-                <LoginFormContent />
-              </Suspense>
+              <span className="text-2xl font-bold text-foreground">Blog</span>
             </div>
-          </MagicCard>
+            <h2 className="text-lg font-semibold text-foreground">欢迎回来</h2>
+            <p className="text-sm text-[#64748b] mt-1">请登录您的账号</p>
+          </div>
+
+          <Suspense fallback={<div className="text-center py-4 text-[#64748b]">加载中...</div>}>
+            <LoginFormContent />
+          </Suspense>
         </div>
-      </BlurFade>
+      </div>
     </div>
   )
 }

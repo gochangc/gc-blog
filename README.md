@@ -2,7 +2,7 @@
 
 ## 项目简介
 
-基于微服务架构的个人博客与导航网站系统，后端采用六边形架构设计，前端使用 Next.js + Magic UI 打造现代化深色主题界面。
+基于微服务架构的个人博客与导航网站系统，后端采用六边形架构设计，前端使用 Next.js + Tailwind CSS 打造清新浅色风格的经典博客界面。
 
 ## 技术栈
 
@@ -18,9 +18,9 @@
 
 ### 前端
 - **框架**: Next.js 16 (App Router) + React 19 + TypeScript 5
-- **样式**: Tailwind CSS v4 + 深色主题（Swiss Modernism 2.0）
-- **UI 组件**: shadcn/ui + Magic UI（15+ 动画组件）
-- **动画**: GSAP 3.15 + ScrollTrigger + motion/react (Framer Motion)
+- **样式**: Tailwind CSS v4 + 浅色主题
+- **UI 组件**: shadcn/ui
+- **动画**: GSAP 3.15 + ScrollTrigger
 - **状态管理**: Zustand
 - **Markdown**: @uiw/react-md-editor + react-markdown + rehype-highlight
 - **包管理**: pnpm
@@ -44,10 +44,10 @@ gc-project/
 ├── gcblog-next/              # 前端项目（Next.js）
 │   ├── src/
 │   │   ├── app/              # Next.js App Router 路由
-│   │   │   ├── (public)/     # 前台页面（博客、导航、登录）
+│   │   │   ├── (public)/     # 前台页面（博客、导航、登录、关于我）
 │   │   │   └── admin/        # 后台管理（文章、分类、标签、导航、用户）
 │   │   ├── components/       # 可复用组件
-│   │   │   ├── ui/           # shadcn/ui + Magic UI 组件
+│   │   │   ├── ui/           # shadcn/ui 组件
 │   │   │   ├── layout/       # 布局组件（Header/Footer/Sidebar）
 │   │   │   ├── blog/         # 博客业务组件
 │   │   │   ├── home/         # 首页组件
@@ -77,19 +77,19 @@ gc-project/
 
 | 页面 | 路由 | 特性 |
 |------|------|------|
-| 首页 | `/` | Particles 粒子背景 + AuroraText 渐变标题 + NumberTicker 统计 |
-| 博客列表 | `/blog` | BlurFade 交错入场 + MagicCard 文章卡片 |
-| 文章详情 | `/blog/[id]` | Markdown 渲染 + 评论区 |
+| 首页 | `/` | 打字机 Hero + 三栏布局（个人信息 / 文章列表 / 热度排行） |
+| 文章详情 | `/blog/[id]` | Markdown 渲染 + 评论区（登录后可评论） |
 | 导航页 | `/navigation` | 分类分组 + NavCard 链接卡片 |
-| 登录 | `/login` | Particles 背景 + MagicCard 表单容器 |
-| 后台管理 | `/admin/*` | 12 个 CRUD 页面，统一深色表格/弹窗/骨架屏 |
+| 关于我 | `/about` | 个人简介 + 兴趣爱好 + 联系方式 |
+| 登录 | `/login` | 简洁登录表单（仅评论时需要） |
+| 后台管理 | `/admin/*` | 文章、分类、标签、导航、用户 CRUD |
 
 ### UI 设计系统
 
-- **色彩**: 主色 `#3b82f6`，背景 `#0f172a`，前景 `#f8fafc`
-- **效果**: Glass 毛玻璃、Gradient 渐变、Glow 辉光、BorderBeam 光边框
-- **动画**: BlurFade 渐显、ShimmerButton 闪光、NumberTicker 数字滚动、Marquee 无限滚动
-- **主题**: 深色优先，支持 next-themes 切换
+- **色彩**: 主色 `#3b82f6`，背景 `#f8fafc`，前景 `#1e293b`
+- **效果**: 毛玻璃导航、柔和阴影、清爽卡片
+- **风格**: 经典博客布局，打字机效果 Hero，三栏文章列表
+- **主题**: 浅色优先
 
 ## 快速开始
 
@@ -118,7 +118,7 @@ cd gateway-service && mvn spring-boot:run
 ```bash
 cd gcblog-next
 pnpm install
-pnpm dev
+NEXT_TELEMETRY_DISABLED=1 pnpm dev
 ```
 
 访问 http://localhost:3000
