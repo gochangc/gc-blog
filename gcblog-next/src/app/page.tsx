@@ -2,6 +2,7 @@ import { TypewriterHero } from '@/components/home/typewriter-hero'
 import { ProfileSidebar } from '@/components/home/profile-sidebar'
 import { ArticleList } from '@/components/home/article-list'
 import { HotArticles } from '@/components/home/hot-articles'
+import { AnimatedSection } from '@/components/animation/animated-section'
 import type { Article, Category } from '@/lib/types/blog'
 
 /** 首页（SSR，经典博客风格：打字机 Hero + 三栏布局） */
@@ -39,24 +40,24 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         <div className="flex gap-6">
           {/* 左侧：个人信息栏（lg 以上显示） */}
-          <div className="hidden lg:block">
+          <AnimatedSection className="hidden lg:block" direction="left" delay={0}>
             <ProfileSidebar categories={categories} articleCount={articles.length} />
-          </div>
+          </AnimatedSection>
 
           {/* 中间：文章列表 */}
-          <div className="flex-1 min-w-0">
+          <AnimatedSection className="flex-1 min-w-0" direction="up" delay={0.1}>
             <div className="rounded-xl border border-[#e2e8f0] bg-white overflow-hidden shadow-sm">
               <div className="px-5 py-4 border-b border-[#f1f5f9]">
                 <h2 className="text-base font-semibold text-foreground">最新文章</h2>
               </div>
               <ArticleList articles={articles} />
             </div>
-          </div>
+          </AnimatedSection>
 
           {/* 右侧：热度排行（lg 以上显示） */}
-          <div className="hidden lg:block">
+          <AnimatedSection className="hidden lg:block" direction="right" delay={0.2}>
             <HotArticles articles={articles} />
-          </div>
+          </AnimatedSection>
         </div>
       </section>
     </div>

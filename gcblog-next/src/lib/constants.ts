@@ -30,7 +30,6 @@ export const ADMIN_MENU_ITEMS: SidebarMenuItem[] = [
 /** 前台导航项 */
 export const NAV_ITEMS = [
   { path: '/', label: '首页' },
-  { path: '/blog', label: '博客' },
   { path: '/navigation', label: '导航' },
 ]
 

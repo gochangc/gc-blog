@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { FileText, FolderOpen, Tag } from 'lucide-react'
+import { AnimatedCounter } from '@/components/animation/animated-counter'
 import type { Category } from '@/lib/types/blog'
 
 interface ProfileSidebarProps {
@@ -16,7 +17,7 @@ export function ProfileSidebar({ categories, articleCount }: ProfileSidebarProps
       <div className="sticky top-20 space-y-5">
         {/* 个人信息卡片 */}
         <div className="rounded-xl border border-[#e2e8f0] bg-white p-5 text-center shadow-sm">
-          <Avatar className="w-20 h-20 mx-auto mb-4 border-2 border-[#e2e8f0]">
+          <Avatar className="w-20 h-20 mx-auto mb-4 border-2 border-[#e2e8f0] transition-transform duration-300 hover:scale-105">
             <AvatarFallback className="bg-gradient-to-br from-[#3b82f6] to-[#6366f1] text-white text-2xl font-bold">
               GC
             </AvatarFallback>
@@ -29,15 +30,21 @@ export function ProfileSidebar({ categories, articleCount }: ProfileSidebarProps
           {/* 统计数据 */}
           <div className="grid grid-cols-3 gap-2 py-3 border-t border-[#e2e8f0]">
             <div>
-              <p className="text-lg font-bold text-foreground">{articleCount}</p>
+              <p className="text-lg font-bold text-foreground">
+                <AnimatedCounter value={articleCount} />
+              </p>
               <p className="text-xs text-[#64748b]">文章</p>
             </div>
             <div>
-              <p className="text-lg font-bold text-foreground">{categories.length}</p>
+              <p className="text-lg font-bold text-foreground">
+                <AnimatedCounter value={categories.length} />
+              </p>
               <p className="text-xs text-[#64748b]">分类</p>
             </div>
             <div>
-              <p className="text-lg font-bold text-foreground">12</p>
+              <p className="text-lg font-bold text-foreground">
+                <AnimatedCounter value={12} />
+              </p>
               <p className="text-xs text-[#64748b]">标签</p>
             </div>
           </div>
@@ -55,7 +62,7 @@ export function ProfileSidebar({ categories, articleCount }: ProfileSidebarProps
                 <Link
                   key={cat.id}
                   href={`/?category=${cat.id}`}
-                  className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-[#475569] hover:text-foreground hover:bg-[#f1f5f9] transition-colors"
+                  className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-[#475569] hover:text-foreground hover:bg-[#f1f5f9] hover:translate-x-1 transition-all"
                 >
                   <span className="flex items-center gap-2">
                     <FileText className="w-3.5 h-3.5" />
@@ -82,7 +89,7 @@ export function ProfileSidebar({ categories, articleCount }: ProfileSidebarProps
             {['生活', '随笔', '阅读', '旅行', '摄影', '美食', '音乐', '思考'].map((tag) => (
               <span
                 key={tag}
-                className="px-2.5 py-1 text-xs text-[#475569] rounded-md border border-[#e2e8f0] hover:border-[#3b82f6]/40 hover:text-[#3b82f6] cursor-pointer transition-colors"
+                className="px-2.5 py-1 text-xs text-[#475569] rounded-md border border-[#e2e8f0] hover:border-[#3b82f6]/40 hover:text-[#3b82f6] hover:scale-105 cursor-pointer transition-all"
               >
                 {tag}
               </span>

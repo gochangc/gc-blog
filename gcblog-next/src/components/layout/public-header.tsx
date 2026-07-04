@@ -9,7 +9,6 @@ import { Menu } from 'lucide-react'
 const NAV_LINKS = [
   { label: '首页', href: '/' },
   { label: '导航', href: '/navigation' },
-  { label: '关于我', href: '/about' },
 ]
 
 /** 前台顶部导航栏（浅色毛玻璃风格，免登录浏览） */

@@ -10,7 +10,7 @@
 | 语言 | TypeScript 5 |
 | 样式 | Tailwind CSS v4 + 浅色主题 |
 | UI 组件 | shadcn/ui |
-| 动画 | GSAP 3.15 + motion/react |
+| 动画 | GSAP 3.15 + ScrollTrigger + motion/react |
 | 状态管理 | Zustand |
 | Markdown | @uiw/react-md-editor + react-markdown |
 | 包管理 | pnpm |
@@ -41,11 +41,10 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api
 ## 页面结构
 
 ```
-/                        # 首页（打字机 Hero + 三栏文章列表 + 热度排行）
+/                        # 首页（打字机 Hero + 三栏文章列表 + 热度排行 + 滚动动画）
 /blog                    # 博客列表
 /blog/[id]               # 文章详情 + 评论
-/navigation              # 导航页
-/about                   # 关于我
+/navigation              # 导航页（分类卡片 + 交错入场动画）
 /login                   # 登录页（仅评论时需要）
 /admin/articles          # 文章管理
 /admin/categories        # 分类管理
